@@ -59,6 +59,14 @@ $ docker exec -it daoliberate /bin/bash
 $ mvn exec:java
 ```
 
+If you want to run one of the available Junit tests, just do:
+ 
+```sh
+$ docker exec -it daoliberate /bin/bash
+$ cd ../tester/
+$ mvn -Dtest=EvilArtificialQuorumTest test #for example
+```
+
 ### Without using docker
 ### Installing
 
