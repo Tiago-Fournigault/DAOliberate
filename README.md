@@ -119,3 +119,6 @@ The classes with tests are in the folder *tester/src/test/java/pt/tecnico/grpc/t
 * [Maven](https://maven.apache.org/) - Build Tool and Dependency Management
 * [gRPC](https://grpc.io/) - RPC framework
 
+----
+
+[System Admin](mailto:tiago.fournigault@tecnico.ulisboa.pt)
