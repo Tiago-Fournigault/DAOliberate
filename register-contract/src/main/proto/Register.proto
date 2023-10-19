@@ -1,0 +1,141 @@
+//
+// Protocol buffers definition for Register
+//
+syntax = "proto3";
+package pt.tecnico.grpc;
+
+enum STATUS{
+	LOGGED = 0;
+	SIGNED = 1;
+	UNKNOWN_NAME = 2;
+	UNKNOWN_THIRD_NAME = 3;
+	WRONG_PASSWORD = 4;
+	NAME_EXISTS = 5;
+	WEAK_PASSWORD = 6;
+	INITIAL_TICKETS_ERROR = 7;
+	INVALID_INVITE = 8;
+	ALREADY_INVITED = 9;
+	DUPLICATE_INVITE = 10;
+	NOT_INVITED = 11;
+	OK = 12;
+	ERROR = 13;
+}
+
+// PING
+message PingRequest {
+	string message = 1;
+}
+message PingResponse {
+	string message = 1;
+}
+
+// LOG IN
+message LoginRequest {
+	string name = 1;
+	string password = 2;
+}
+message LoginResponse {
+	STATUS status = 1;
+}
+
+// SIGN UP
+message SignupRequest {
+	string name = 1;
+	string password = 2;
+}
+message SignupResponse {
+	STATUS status = 1;
+}
+
+// CREATE ROOM
+message CreateRoomRequest {
+	string name = 1;
+	string password = 2;
+	string room_name = 3;
+	repeated string initial_users = 4;
+}
+message CreateRoomResponse {
+	STATUS status = 1;
+	repeated string names = 2;
+	int32 room_id = 3;
+	string initial_secret = 4;
+}
+
+// CHECK INVITES
+message CheckSecretsRequest {
+	string name = 1;
+	string password = 2;
+}
+message CheckSecretsResponse {
+	STATUS status = 1;
+	repeated int32 room_ids = 2;
+	repeated string room_names = 3;
+}
+
+// PRE INVITE USER
+message PreInviteUserRequest {
+	string name = 1;
+	int32 room_id = 2;
+	string room_name = 3;
+	string invite = 4;
+	string signed_invite = 5;
+}
+message PreInviteUserResponse {
+	STATUS status = 1;
+}
+
+// INVITE USER
+message InviteUserRequest {
+	string name = 1;
+	int32 room_id = 2;
+}
+message InviteUserResponse {
+	STATUS status = 1;
+}
+
+// CHECK INVITES
+message CheckInvitesRequest {
+	string name = 1;
+	string password = 2;
+}
+message CheckInvitesResponse {
+	STATUS status = 1;
+	repeated int32 room_ids = 2;
+	repeated string room_names = 3;
+}
+
+// GET INVITE
+message GetInviteRequest {
+	string name = 1;
+	string password = 2;
+	int32 room_id = 3;
+}
+message GetInviteResponse {
+	STATUS status = 1;
+	string invite = 2;
+	string signed_invite = 3;
+}
+
+// GET INITIAL SECRET
+message GetInitialSecretRequest {
+	string name = 1;
+	string password = 2;
+	int32 room_id = 3;
+}
+message GetInitialSecretResponse {
+	STATUS status = 1;
+	string secret = 2;
+}
+
+service RegisterService {
+	rpc ping(PingRequest) returns (PingResponse);
+	rpc login(LoginRequest) returns (LoginResponse);
+	rpc signup(SignupRequest) returns (SignupResponse);
+	rpc createRoom(CreateRoomRequest) returns (CreateRoomResponse);
+	rpc checkSecrets(CheckSecretsRequest) returns (CheckSecretsResponse);
+	rpc preInviteUser(PreInviteUserRequest) returns (PreInviteUserResponse);
+	rpc inviteUser(InviteUserRequest) returns (InviteUserResponse);
+	rpc checkInvites(CheckInvitesRequest) returns (CheckInvitesResponse);
+	rpc getInvite(GetInviteRequest) returns (GetInviteResponse);
+	rpc getInitialSecret(GetInitialSecretRequest) returns (GetInitialSecretResponse);
+}

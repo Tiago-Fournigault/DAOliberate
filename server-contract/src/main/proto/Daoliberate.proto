@@ -1,0 +1,441 @@
+//
+// Protocol buffers definition for Hello World
+//
+syntax = "proto3";
+package pt.tecnico.grpc;
+
+enum STATUS{
+	LOGGED = 0;
+	UNKNOWN_NAME = 1;
+	UNKNOWN_THIRD_NAME = 2;
+	WRONG_PASSWORD = 3;
+	NAME_EXISTS = 4;
+	ACCESS_ROOM_DENIED = 5;
+	WRONG_TICKET = 6;
+	NONEXISTENT_ROOM = 7;
+	NONEXISTENT_CHANNEL = 8;
+	NONEXISTENT_VOTE = 9;
+	ALREADY_VOTED = 10;
+	NOT_INITIATOR = 11;
+	EXISTENT_CHANNEL = 12;
+	NONEXISTENT_MESSAGE = 13;
+	NOTOWNER_MESSAGE = 14;
+	MESSAGE_NOT_PINNED = 15;
+	INVALID_INVITE = 16;
+	ALREADY_INVITED = 17;
+	DUPLICATE_INVITE = 18;
+	USER_PUNISHED = 19;
+	USER_NOT_PUNISHED = 20;
+	INVALID_THRESHOLD = 21;
+	INVALID_EXPERIMENTAL_INTERACTIONS = 22;
+	INVALID_REPUTATION = 23;
+	OWN_REPUTATION = 24;
+	OK = 25;
+	VOTE = 26;
+	ALREADY_IN_VOTE = 27;
+	ERROR = 28;
+}
+
+// PING
+message PingRequest {
+	string message = 1;
+}
+message PingResponse {
+	string message = 1;
+}
+
+// CREATE ROOM
+message CreateRoomRequest {
+	string room_name = 1;
+	repeated string initial_secrets = 2;
+}
+message CreateRoomResponse {
+	int32 room_id = 1;
+}
+
+// MESSAGE
+message Message {
+	int32 message_id = 1;
+	string owner_pseudonym = 2;
+	string editor_pseudonym = 3;
+	string content = 4;
+}
+
+// ENTER ROOM
+message EnterRoomRequest {
+	string pseudonym = 1;		
+	string password = 2;
+	int32 room_id = 3;
+}
+message EnterRoomResponse {
+	STATUS status = 1;
+	string room_name = 2;
+	repeated string channel_names = 3;
+	double reputation = 4;
+}
+
+// ENTER CHANNEL
+message EnterChannelRequest {
+	string pseudonym = 1;		
+	string password = 2;
+	int32 room_id = 3;
+	string channel_name = 4;
+}
+message EnterChannelResponse {
+	STATUS status = 1;
+	repeated Message messages = 2;
+}
+
+// CREATE MESSAGE
+message CreateMessageRequest {
+	string pseudonym = 1;		
+	string password = 2;
+	int32 room_id = 3;
+	string channel_name = 4;
+	string content = 5;
+}
+message CreateMessageResponse {
+	STATUS status = 1;
+}
+
+// INGRESS ROOM
+message IngressRoomRequest {
+	int32 room_id = 1;
+	string initial_secret = 2;
+	string pseudonym = 3;
+	string password = 4;
+}
+message IngressRoomResponse {
+	STATUS status = 1;
+	string room_name = 2;
+}
+
+// DELETE USER
+message DeleteUserRequest {
+	string pseudonym = 1;		
+	string password = 2;
+	int32 room_id = 3;
+	string name = 4;
+}
+message DeleteUserResponse {
+	STATUS status = 1;
+	int32 vote_id = 2;
+}
+
+// INVITE USER
+message InviteUserRequest {
+	string pseudonym = 1;		
+	string password = 2;
+	int32 room_id = 3;
+	string name = 4;
+}
+message InviteUserResponse {
+	STATUS status = 1;
+	int32 vote_id = 2;
+}
+
+// USE INVITE
+message UseInviteRequest {
+	int32 room_id = 1;
+	string invite = 2;
+	string signed_invite = 3;
+	string pseudonym = 4;
+	string password = 5;
+}
+message UseInviteResponse {
+	STATUS status = 1;
+	string room_name = 2;
+}
+
+// CREATE CHANNEL
+message CreateChannelRequest {
+	string pseudonym = 1;		
+	string password = 2;
+	int32 room_id = 3;
+	string channel_name = 4;
+}
+message CreateChannelResponse {
+	STATUS status = 1;
+	int32 vote_id = 2;
+}
+
+// DELETE CHANNEL
+message DeleteChannelRequest {
+	string pseudonym = 1;		
+	string password = 2;
+	int32 room_id = 3;
+	string channel_name = 4;
+}
+message DeleteChannelResponse {
+	STATUS status = 1;
+	int32 vote_id = 2;
+}
+
+// VIEW VOTES
+message ViewVotesRequest {
+	string pseudonym = 1;		
+	string password = 2;
+	int32 room_id = 3;
+}
+message ViewVotesResponse {
+	STATUS status = 1;
+	repeated string votes = 2;
+}
+
+// EDIT VOTE
+message EditVoteRequest {
+	string pseudonym = 1;		
+	string password = 2;
+	int32 room_id = 3;
+	int32 vote_id = 4;
+	string description = 5;
+}
+message EditVoteResponse {
+	STATUS status = 1;
+}
+
+// CANCEL VOTE
+message CancelVoteRequest {
+	string pseudonym = 1;		
+	string password = 2;
+	int32 room_id = 3;
+	int32 vote_id = 4;
+}
+message CancelVoteResponse {
+	STATUS status = 1;
+}
+
+// VOTE
+message VoteRequest {
+	string pseudonym = 1;		
+	string password = 2;
+	int32 room_id = 3;
+	int32 vote_id = 4;
+	bool vote = 5;
+}
+message VoteResponse {
+	STATUS status = 1;
+}
+
+// VIEW HISTORY
+message ViewHistoryRequest {
+	string pseudonym = 1;		
+	string password = 2;
+	int32 room_id = 3;
+}
+message ViewHistoryResponse {
+	STATUS status = 1;
+	repeated string actions = 2;
+}
+
+// DELETE MESSAGE
+enum REASON{
+	OFFENSIVE = 0;
+	SPAM = 1;
+	OUT_OF_CONTEXT = 2;
+	CLEARER = 3;
+	OWNER = 4;
+} 
+message DeleteMessageRequest {
+	string pseudonym = 1;
+	string password = 2;
+	int32 room_id = 3;
+	string channel_name = 4;
+	int32 message_id = 5;
+	REASON reason = 6;
+}
+message DeleteMessageResponse {
+	STATUS status = 1;
+	int32 vote_id = 2;
+}
+
+// VIEW PINNED MESSAGES
+message ViewPinnedMessagesRequest {
+	string pseudonym = 1;
+	string password = 2;
+	int32 room_id = 3;
+	string channel_name = 4;
+}
+message ViewPinnedMessagesResponse {
+	STATUS status = 1;
+	repeated Message pinned_messages = 2;
+}
+
+// PIN MESSAGE
+message PinMessageRequest {
+	string pseudonym = 1;
+	string password = 2;
+	int32 room_id = 3;
+	string channel_name = 4;
+	int32 message_id = 5;
+}
+message PinMessageResponse {
+	STATUS status = 1;
+	int32 vote_id = 2;
+}
+
+// UNPIN MESSAGE
+message UnpinMessageRequest {
+	string pseudonym = 1;
+	string password = 2;
+	int32 room_id = 3;
+	string channel_name = 4;
+	int32 message_id = 5;
+}
+message UnpinMessageResponse {
+	STATUS status = 1;
+	int32 vote_id = 2;
+}
+
+// EDIT MESSAGE
+message EditMessageRequest {
+	string pseudonym = 1;
+	string password = 2;
+	int32 room_id = 3;
+	string channel_name = 4;
+	int32 message_id = 5;
+	string content = 6;
+	REASON reason = 7;
+}
+message EditMessageResponse {
+	STATUS status = 1;
+	int32 vote_id = 2;
+}
+
+// PUNISH USER
+message PunishUserRequest {
+	string pseudonym = 1;		
+	string password = 2;
+	int32 room_id = 3;
+	string name = 4;
+	int32 days = 5;
+	int32 hours = 6;
+	int32 minutes = 7;
+}
+message PunishUserResponse {
+	STATUS status = 1;
+	int32 vote_id = 2;
+}
+
+// ACTIONS
+enum ACTION {
+	CREATE_CHANNEL = 0;
+	DELETE_CHANNEL = 1;
+	DELETE_MESSAGE = 2;
+	DELETE_USER = 3;
+	EDIT_MESSAGE = 4;
+	INVITE_USER = 5;
+	PIN_MESSAGE = 6;
+	PUNISH_USER = 7;
+	UNPIN_MESSAGE = 8;
+}
+// THRESHOLD VOTE
+message ThresholdVoteRequest {
+	string pseudonym = 1;		
+	string password = 2;
+	int32 room_id = 3;
+	ACTION action = 4;
+	double threshold = 5;
+}
+message ThresholdVoteResponse {
+	STATUS status = 1;
+	int32 vote_id = 2;
+}
+
+// GET THRESHOLDS
+message GetThresholdsRequest {
+	string pseudonym = 1;		
+	string password = 2;
+	int32 room_id = 3;
+}
+message GetThresholdsResponse {
+	STATUS status = 1;
+	double create_channel = 2;
+	double delete_channel = 3;
+	double delete_message = 4;
+	double delete_user = 5;
+	double edit_message = 6;
+	double invite_user = 7;
+	double pin_message = 8;
+	double punish_user = 9;
+	double unpin_message = 10;
+}
+
+// GET EXPERIMENTAL INTERACTIONS
+message GetExperimentalInteractionsRequest {
+	string pseudonym = 1;		
+	string password = 2;
+	int32 room_id = 3;
+}
+message GetExperimentalInteractionsResponse {
+	STATUS status = 1;
+	int32 experimental_interactions = 2;
+}
+
+// SET EXPERIMENTAL INTERACTIONS
+message SetExperimentalInteractionsRequest {
+	string pseudonym = 1;		
+	string password = 2;
+	int32 room_id = 3;
+	int32 experimental_interactions = 4;
+}
+message SetExperimentalInteractionsResponse {
+	STATUS status = 1;
+	int32 vote_id = 2;
+}
+
+// GET REPUTATION
+message GetReputationRequest {
+	string pseudonym = 1;		
+	string password = 2;
+	string name = 3;
+	int32 room_id = 4;
+}
+message GetReputationResponse {
+	STATUS status = 1;
+	double reputation = 2;
+}
+
+// SET REPUTATION
+message SetReputationRequest {
+	string pseudonym = 1;		
+	string password = 2;
+	string name = 3;
+	int32 room_id = 4;
+	double reputation = 5;
+}
+message SetReputationResponse {
+	STATUS status = 1;
+	int32 vote_id = 2;
+}
+
+service DaoliberateService {
+	rpc ping(PingRequest) returns (PingResponse);
+	rpc createRoom(CreateRoomRequest) returns (CreateRoomResponse);
+	rpc enterRoom(EnterRoomRequest) returns (EnterRoomResponse);
+	rpc enterChannel(EnterChannelRequest) returns (EnterChannelResponse);
+	rpc createMessage(CreateMessageRequest) returns (CreateMessageResponse);
+	rpc ingressRoom(IngressRoomRequest) returns (IngressRoomResponse);
+	rpc inviteUser(InviteUserRequest) returns (InviteUserResponse);
+	rpc useInvite(UseInviteRequest) returns (UseInviteResponse);
+	rpc createChannel(CreateChannelRequest) returns (CreateChannelResponse);
+	rpc viewVotes(ViewVotesRequest) returns (ViewVotesResponse);
+	rpc editVote(EditVoteRequest) returns (EditVoteResponse);
+	rpc cancelVote(CancelVoteRequest) returns (CancelVoteResponse);
+	rpc vote(VoteRequest) returns (VoteResponse);
+	rpc viewHistory(ViewHistoryRequest) returns (ViewHistoryResponse);
+	rpc deleteChannel(DeleteChannelRequest) returns (DeleteChannelResponse);
+	rpc deleteMessage(DeleteMessageRequest) returns (DeleteMessageResponse);
+	rpc viewPinnedMessages(ViewPinnedMessagesRequest) returns (ViewPinnedMessagesResponse);
+	rpc pinMessage(PinMessageRequest) returns (PinMessageResponse);
+	rpc unpinMessage(UnpinMessageRequest) returns (UnpinMessageResponse);
+	rpc deleteUser(DeleteUserRequest) returns (DeleteUserResponse);
+	rpc editMessage(EditMessageRequest) returns (EditMessageResponse);
+	rpc punishUser(PunishUserRequest) returns (PunishUserResponse);
+	rpc thresholdVote(ThresholdVoteRequest) returns (ThresholdVoteResponse);
+	rpc getThresholds(GetThresholdsRequest) returns (GetThresholdsResponse);
+	rpc getExperimentalInteractions(GetExperimentalInteractionsRequest) returns (GetExperimentalInteractionsResponse);
+	rpc setExperimentalInteractions(SetExperimentalInteractionsRequest) returns (SetExperimentalInteractionsResponse);
+	rpc getReputation(GetReputationRequest) returns (GetReputationResponse);
+	rpc setReputation(SetReputationRequest) returns (SetReputationResponse);
+}
