@@ -23,21 +23,49 @@ The deliberation of ideas in organizations and communities is a very important a
 
 Java Developer Kit 11 is required running on Linux, Windows or Mac.
 Maven 3 is also required.
+However, if you want to run the system in a docker container you only need to have docker installed.
 
 To confirm that you have them installed, open a terminal and type:
 
 ```
-javac -version
+javac --version
 
-mvn -version
+mvn --version
+
+docker --version
 ```
 
+### Using docker
+### Run in docker container
+
+First create a docker image by running the following command in the folder where the *Dockerfile* is located:
+
+```sh
+$ docker build -t daoliberate .
+```
+
+Then create a container that runs the previously created image:
+
+```sh
+$ docker run -it --name daoliberate daoliberate
+```
+
+The creation of the container will launch the servers in the background, along with the client application. The client application allows interaction with the system and will wait for input from the user.
+
+If you wish to launch more client applications to interact with the system, simply execute the following commands in another terminal:
+
+```sh
+$ docker exec -it daoliberate /bin/bash
+$ mvn exec:java
+```
+
+### Without using docker
 ### Installing
 
 To compile and install all modules:
 
-```
-mvn clean install -DskipTests
+```sh
+$ mvn clean install -DskipTests
 ```
 
 The integration tests are skipped because they require theservers to be running.
