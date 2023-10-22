@@ -22,7 +22,7 @@ import java.util.List;
 
 /**
  * The RegisterLibrary class is responsible for communications between
- * the Register server and the Daoliberate server.
+ * the Register server and the DAOliberate server.
  */
 public class RegisterLibrary {
 

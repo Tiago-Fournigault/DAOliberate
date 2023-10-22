@@ -9,7 +9,7 @@ Tiago Emmanuel Dos Santos Fournigault - ist192562
 
 This library module contains protocol buffers (protobuf) definitions for the Register Server.
 
-The interface is shared by the Register Server, that implements it, and by the client and Daoliberate Server, that needs it to make remote calls.
+The interface is shared by the Register Server, that implements it, and by the client and DAOliberate Server, that needs it to make remote calls.
 
 
 ## Instructions for using Maven

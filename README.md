@@ -88,9 +88,9 @@ To create the digital certificates needed to run the servers just go to the *cer
 $ ./gen.sh
 ```
 
-#### Launching the Daoliberate server
+#### Launching the DAOliberate server
 
-To launch the Daoliberate server just go to the *server* folder and execute the following command:
+To launch the DAOliberate server just go to the *server* folder and execute the following command:
 
 ```sh
 $ mvn exec:java

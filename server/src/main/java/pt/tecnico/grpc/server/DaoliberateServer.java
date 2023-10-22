@@ -13,7 +13,7 @@ import javax.net.ssl.SSLException;
 import java.io.File;
 
 /**
- * The DaoliberateServer class is responsible for starting the Daoliberate server
+ * The DaoliberateServer class is responsible for starting the DAOliberate server
  */
 public class DaoliberateServer {
 

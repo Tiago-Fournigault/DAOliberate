@@ -30,7 +30,7 @@ import java.security.spec.PKCS8EncodedKeySpec;
 
 /**
  * The DaoliberateLibrary class is responsible for communications between
- * the Daoliberate Server and Register Server.
+ * the DAOliberate Server and Register Server.
  */
 public class DaoliberateLibrary {
 

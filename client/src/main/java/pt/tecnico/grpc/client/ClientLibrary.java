@@ -36,7 +36,7 @@ import java.util.Scanner;
 
 /**
  * The ClientLibrary class is responsible for communications between
- * the client application and the Daoliberate and Register servers.
+ * the client application and the DAOliberate and Register servers.
  */
 public class ClientLibrary {
 

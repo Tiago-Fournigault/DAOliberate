@@ -12,7 +12,7 @@ openssl req -new -key ca-prv.key -out ca.csr -subj "/C=PT/ST=Lisbon/L=Lisbon/O=I
 openssl x509 -req -days 365 -in ca.csr -signkey ca-prv.key -out ca-cert.pem
 
 
-########## Daoliberate ##########
+########## DAOliberate ##########
 # Generating a private key and certificate signing request (CSR) with OpenSSL
 openssl req -newkey rsa:4096 -nodes -keyout daoliberate-key.pem -out daoliberate-req.pem -subj "/C=PT/ST=Lisbon/L=Lisbon/O=IST/OU=Education/CN=localhost/emailAddress= "
 

@@ -1,4 +1,4 @@
-# Daoliberate Server
+# DAOliberate Server
 
 ## Author
 
